@@ -22,14 +22,25 @@ class _HomeScreenState extends State<HomeScreen> {
     final controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xffC21010),
         title: Text("News"),
+        
       ),
+      backgroundColor: Colors.black,
       body: controller.homeResponseList!.isEmpty
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: controller.homeResponseList!.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(controller.homeResponseList![index].title ?? ""),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: Image.network(
+                      controller.homeResponseList![index].urlToImage ?? ""),
+                  title: Text(controller.homeResponseList![index].title ?? "",
+                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                  // subtitle: Text(
+                  //     controller.homeResponseList![index].description ?? ""),
+                ),
               ),
             ),
     );
