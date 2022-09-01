@@ -13,8 +13,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final _controller = Provider.of<HomeController>(context, listen: false);
-    _controller.getData();
+    final controller = Provider.of<HomeController>(context, listen: false);
+    controller.getData();
   }
 
   @override
@@ -22,23 +22,32 @@ class _HomeScreenState extends State<HomeScreen> {
     final controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffC21010),
-        title: Text("News"),
-        
+        actions: const [SizedBox(
+          width: 40,
+          child: Icon(Icons.newspaper_rounded))],
+        backgroundColor: const Color(0xffC21010),
+        title: const Text("News"),
       ),
       backgroundColor: Colors.black,
       body: controller.homeResponseList!.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: controller.homeResponseList!.length,
               itemBuilder: (context, index) => Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Image.network(
-                      controller.homeResponseList![index].urlToImage ?? ""),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18)),
+                  tileColor: Colors.grey.shade900,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                        controller.homeResponseList![index].urlToImage ?? ""),
+                  ),
                   title: Text(controller.homeResponseList![index].title ?? "",
-                      style: TextStyle(fontSize: 15, color: Colors.white)),
+                      style: const TextStyle(fontSize: 15, color: Colors.white)),
                   // subtitle: Text(
+                  //   style: TextStyle(color: Colors.black),
                   //     controller.homeResponseList![index].description ?? ""),
                 ),
               ),
