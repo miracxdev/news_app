@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_app/ui/home_screen/controller/home_controller.dart';
+import 'package:new_app/ui/info_screen/view/info_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final controller = context.watch<HomeController>();
     return Scaffold(
       appBar: AppBar(
-        actions: const [SizedBox(
-          width: 40,
-          child: Icon(Icons.newspaper_rounded))],
+        actions: const [
+          SizedBox(width: 40, child: Icon(Icons.newspaper_rounded))
+        ],
         backgroundColor: const Color(0xffC21010),
         title: const Text("News"),
       ),
@@ -34,24 +35,35 @@ class _HomeScreenState extends State<HomeScreen> {
           : ListView.builder(
               itemCount: controller.homeResponseList!.length,
               itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18)),
-                  tileColor: Colors.grey.shade900,
-                  leading: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Image.network(
-                        controller.homeResponseList![index].urlToImage ?? ""),
-                  ),
-                  title: Text(controller.homeResponseList![index].title ?? "",
-                      style: const TextStyle(fontSize: 15, color: Colors.white)),
-                  // subtitle: Text(
-                  //   style: TextStyle(color: Colors.black),
-                  //     controller.homeResponseList![index].description ?? ""),
-                ),
-              ),
-            ),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InfoScreen(
+                              url: controller.homeResponseList![index].url!),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Image.network(controller
+                                    .homeResponseList![index].urlToImage ??
+                                ""),
+                          ),
+                          Spacer(),
+                          Expanded(
+                            flex: 6,
+                            child: Text(
+                                controller.homeResponseList![index].title ?? "",
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.white)),
+                          )
+                        ],
+                      ),
+                    ),
+                  )),
     );
   }
 }
